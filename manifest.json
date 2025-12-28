@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "Reservation Manager",
+    "version": "1.2",
+    "permissions": [
+        "storage"
+    ],
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.reservecalifornia.com/*",
+                "https://reservecalifornia.com/*"
+            ],
+            "js": [
+                "sites/reservecalifornia.js",
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        },
+        {
+            "matches": [
+                "https://www.recreation.gov/*",
+                "https://recreation.gov/*"
+            ],
+            "js": [
+                "sites/recreationGov.js",
+                "content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ]
+}

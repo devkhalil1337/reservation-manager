@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation Manager</title>
+    <style>
+        /* General body style */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            width: 280px;
+            background-color: #f7f9fc;
+            color: #333;
+        }
+
+        /* Form labels */
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Inputs & selects */
+        input,
+        select {
+            width: 100%;
+            margin-top: 6px;
+            padding: 8px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+        }
+
+        /* Button style */
+        button {
+            margin-top: 18px;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #357ab8;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Optional subtle card effect */
+        .popup-container {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="popup-container">
+        <label>
+            Number of Days
+            <input type="number" id="numberOfDays" min="2" max="10" value="2">
+        </label>
+        <label>
+            People
+            <input type="number" id="people" min="1" value="1">
+        </label>
+
+        <label>
+            Vehicles
+            <input type="number" id="vehicles" min="0" value="0">
+        </label>
+
+        <label>
+            Trailer Length (ft)
+            <input type="number" id="trailerLength" value="25">
+        </label>
+
+        <label>
+            Pass Type
+            <select id="passType">
+                <option value="">None</option>
+                <option value="Interagency Lifetime Senior Pass">Senior Lifetime</option>
+                <option value="Interagency Annual Senior Pass">Senior Annual</option>
+            </select>
+        </label>
+
+        <label>
+            Pass Number
+            <input type="text" id="passNumber">
+        </label>
+
+        <button id="saveReservation">Save</button>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
