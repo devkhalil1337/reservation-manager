@@ -157,20 +157,28 @@ ReservationManager.prototype.finalizeBooking = async function (btn) {
     this.interfaceText.textContent = 'Booking...';
 
     // Click on the campsite button to go to the checkout page
-    btn.click();
+    // btn.click();
 
-    // Wait for the checkout button to be enabled (not disabled)
-    const checkoutBtn = await this.waitForEnabledCheckoutButton();
-    if (checkoutBtn) {
-        checkoutBtn.click();
-        setTimeout(() => {
-            if (!this.checkoutStarted) {
-                this.checkoutStarted = true;
-                handleNextPage();
-            }
-        }, 0);
-        // Proceed with filling out the next page
+    await clickElement('#checkout-button', {
+        wait: true,
+        delayMs: 200
+    });
+    if (!this.checkoutStarted) {
+        this.checkoutStarted = true;
+        handleNextPage();
     }
+    // Wait for the checkout button to be enabled (not disabled)
+    // const checkoutBtn = await this.waitForEnabledCheckoutButton();
+    // if (checkoutBtn) {
+    //     checkoutBtn.click();
+    //     setTimeout(() => {
+    //         if (!this.checkoutStarted) {
+    //             this.checkoutStarted = true;
+    //             handleNextPage();
+    //         }
+    //     }, 0);
+    //     // Proceed with filling out the next page
+    // }
 };
 
 // Helper function to wait for the checkout button to be enabled using waitForElement
