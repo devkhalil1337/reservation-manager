@@ -99,9 +99,7 @@
         <label>
             Pass Type
             <select id="passType">
-                <option value="">None</option>
                 <option value="Interagency Lifetime Senior Pass">Senior Lifetime</option>
-                <option value="Interagency Annual Senior Pass">Senior Annual</option>
             </select>
         </label>
 
@@ -111,6 +109,9 @@
         </label>
 
         <button id="saveReservation">Save</button>
+        <div id="saveStatus" style="display:none; color: green; margin-top: 8px;">
+            ✅ Saved successfully
+        </div>
     </div>
 
     <script src="popup.js"></script>
