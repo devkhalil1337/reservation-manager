@@ -9,20 +9,29 @@ let RM_CONFIG = {
     passNumber: ''
 };
 
-if (chrome?.storage?.sync) {
-    chrome.storage.sync.get(SITE_KEY, data => {
-        RM_CONFIG = { ...RM_CONFIG, ...(data[SITE_KEY] || {}) };
-        console.log('[RM] Loaded config:', RM_CONFIG);
+function loadFormData() {
+    return new Promise(resolve => {
+        if (chrome?.storage?.sync) {
+            chrome.storage.sync.get(SITE_KEY, data => {
+                RM_CONFIG = { ...RM_CONFIG, ...(data[SITE_KEY] || {}) };
+                console.log('[RM] Loaded config:', RM_CONFIG);
+                resolve(RM_CONFIG);
+            });
+        } else {
+            resolve(RM_CONFIG);
+        }
     });
 }
 
-function reservecalifornia() {
+
+
+async function reservecalifornia() {
     console.log('[RM] reservecalifornia.com detected');
 
     const rmContainer =
         document.querySelector('.reservation-manager-interface-wrapper');
     if (rmContainer) rmContainer.remove();
-
+    await loadFormData();
     new ReservationManager();
 }
 
@@ -159,7 +168,7 @@ ReservationManager.prototype.finalizeBooking = async function (btn) {
                 this.checkoutStarted = true;
                 handleNextPage();
             }
-        }, 1000);
+        }, 0);
         // Proceed with filling out the next page
     }
 };

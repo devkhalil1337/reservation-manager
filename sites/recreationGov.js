@@ -9,18 +9,27 @@ let RM_CONFIG = {
     passNumber: ''
 };
 
-if (chrome?.storage?.sync) {
-    chrome.storage.sync.get(SITE_KEY, data => {
-        RM_CONFIG = { ...RM_CONFIG, ...(data[SITE_KEY] || {}) };
-        console.log('[RM] Loaded config:', RM_CONFIG);
+function loadFormData() {
+    return new Promise(resolve => {
+        if (chrome?.storage?.sync) {
+            chrome.storage.sync.get(SITE_KEY, data => {
+                RM_CONFIG = { ...RM_CONFIG, ...(data[SITE_KEY] || {}) };
+                console.log('[RM] Loaded config:', RM_CONFIG);
+                resolve(RM_CONFIG);
+            });
+        } else {
+            resolve(RM_CONFIG);
+        }
     });
 }
 
 
-function runRecreationGov() {
+
+async function runRecreationGov() {
     console.log('[RM] Recreation.gov detected');
     const rmContainer = document.querySelector('.reservation-manager-interface-wrapper');
     if (rmContainer) rmContainer.remove();
+    await loadFormData();
     new ReservationManager();
 }
 
@@ -68,6 +77,7 @@ async function handleNextPage() {
         await selectDropdownValue('select[id^="pass_type"]', RM_CONFIG?.passType || 'Interagency Lifetime Senior Pass');
         await typeIntoInput('input[id^="pass_number"]', RM_CONFIG?.passNumber);
         await clickElement('#need-to-know-checkbox');
+        await clickElement('#test-hook-submit');
     } catch (e) {
         console.warn('Next page not loaded:', e);
     }
@@ -210,7 +220,7 @@ ReservationManager.prototype.selectCampsite = function (e) {
             if (this.activeTarget === key) {
                 this.handleRefresh();
             }
-        }, 2500);
+        }, 800);
         return;
     }
     clearInterval(this.refreshTimer);
