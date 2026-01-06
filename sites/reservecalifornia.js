@@ -9,6 +9,20 @@ let RM_CONFIG = {
     passNumber: ''
 };
 
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== 'sync') return;
+
+    if (changes[SITE_KEY]) {
+        console.log('[RM] Storage updated, reloading config...');
+        RM_CONFIG = {
+            ...RM_CONFIG,
+            ...changes[SITE_KEY].newValue
+        };
+        console.log('[RM] Updated config:', RM_CONFIG);
+    }
+});
+
+
 function loadFormData() {
     return new Promise(resolve => {
         if (chrome?.storage?.sync) {
