@@ -154,14 +154,13 @@ ReservationManager.prototype.handleRefresh = function () {
 
     document.querySelector('.refresh-btn')?.click();
 };
-// Modified finalizeBooking method
+
 ReservationManager.prototype.finalizeBooking = async function (btn) {
     if (this.finalized) return;
 
     this.finalized = true;
     this.activeKey = null;
 
-    // Clear any existing refresh interval
     if (this.refreshTimer) {
         clearInterval(this.refreshTimer);
         this.refreshTimer = null;
@@ -170,8 +169,7 @@ ReservationManager.prototype.finalizeBooking = async function (btn) {
     console.log('[RM] Campsite available, booking started');
     this.interfaceText.textContent = 'Booking...';
 
-    // Click on the campsite button to go to the checkout page
-    // btn.click();
+    btn.click();
 
     await clickElement('#checkout-button', {
         wait: true,
@@ -181,43 +179,7 @@ ReservationManager.prototype.finalizeBooking = async function (btn) {
         this.checkoutStarted = true;
         handleNextPage();
     }
-    // Wait for the checkout button to be enabled (not disabled)
-    // const checkoutBtn = await this.waitForEnabledCheckoutButton();
-    // if (checkoutBtn) {
-    //     checkoutBtn.click();
-    //     setTimeout(() => {
-    //         if (!this.checkoutStarted) {
-    //             this.checkoutStarted = true;
-    //             handleNextPage();
-    //         }
-    //     }, 0);
-    //     // Proceed with filling out the next page
-    // }
 };
-
-// Helper function to wait for the checkout button to be enabled using waitForElement
-ReservationManager.prototype.waitForEnabledCheckoutButton = function () {
-    return waitForElement('#checkout-button').then((checkoutBtn) => {
-        return new Promise((resolve, reject) => {
-            // Check if the checkout button is disabled
-            const interval = setInterval(() => {
-                if (!checkoutBtn.disabled) {
-                    clearInterval(interval);  // Stop checking once it's enabled
-                    resolve(checkoutBtn);
-                }
-            }, 500);  // Check every 500ms
-
-            // Timeout in case button does not become enabled in a reasonable time
-            setTimeout(() => {
-                clearInterval(interval);
-                reject('Checkout button not enabled within timeout period');
-            }, 30000); // 30 seconds timeout (you can adjust this value)
-        });
-    });
-};
-
-
-
 
 
 // ================= Checkout form automation =================
@@ -226,10 +188,7 @@ ReservationManager.prototype.waitForEnabledCheckoutButton = function () {
 async function handleNextPage() {
     console.log('[RM] Filling checkout form...');
     try {
-        let checkoutDetailsPage = await waitForElement('.main_title');
-        if (!checkoutDetailsPage) {
-            checkoutDetailsPage = await waitForElement('.main_title');
-        }
+        await waitForElement('.main_title');
         await selectDropdownValue('#classification_dropdown', '61'); //Classification Regular/Senior Citizien
         await selectDropdownValue('#precart_Adults', '1'); //Adults
         await selectDropdownValue('#precart_Children', '0'); //Children
