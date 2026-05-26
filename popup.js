@@ -1,4 +1,14 @@
+const BUILD_NUMBER = 1;
+
 let SITE_KEY = null;
+
+function showVersionInfo() {
+    const el = document.getElementById('versionInfo');
+    if (!el) return;
+
+    const version = chrome.runtime.getManifest().version;
+    el.textContent = `v${version} · Build ${BUILD_NUMBER}`;
+}
 
 const fields = {
     numberOfDays: document.getElementById('numberOfDays'),
@@ -37,6 +47,8 @@ function showSavedMessage() {
 
 // 🔹 Load data when popup opens
 document.addEventListener('DOMContentLoaded', () => {
+    showVersionInfo();
+
     chrome.storage.sync.get('LAST_SITE_KEY', data => {
         if (data.LAST_SITE_KEY) {
             SITE_KEY = data.LAST_SITE_KEY;
